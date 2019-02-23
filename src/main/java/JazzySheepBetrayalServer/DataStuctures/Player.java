@@ -10,5 +10,26 @@ public class Player {
         this.type = type;
     }
 
-    //TODO add override equals
+    @Override
+    public boolean equals(Object obj){
+        if(!(obj instanceof Player)){
+            return false;
+        }
+        Player other = (Player) obj;
+        if(this.getId().equals(other.getId())){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+
 }
