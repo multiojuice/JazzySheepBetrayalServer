@@ -1,6 +1,7 @@
 package JazzySheepBetrayalServer.Threads;
 
 import JazzySheepBetrayalServer.DataStuctures.GameBoard;
+import JazzySheepBetrayalServer.DataStuctures.Type;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -24,6 +25,7 @@ public class ServerController implements Runnable {
         System.out.println("Starting ServerControllerThread");
         Thread roundMonitorThread = new Thread(new RoundMonitorThread(gameBoard));
         roundMonitorThread.run();
+        boolean blackSheep = true;
         while(true) {
             // Listen and get new socket from client
             Socket clientSocket = null;
@@ -32,10 +34,15 @@ public class ServerController implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+            Thread thread;
             // Send the socket to a playerThread to handle its interactions
             if (clientSocket != null) {
-                Thread thread = new Thread(new PlayerThread(clientSocket, gameBoard, "RandomID"));
+                if(blackSheep){
+                    thread = new Thread(new PlayerThread(clientSocket, gameBoard, "RandomID", Type.BLACK));
+                    blackSheep = false;
+                }else{
+                    thread = new Thread(new PlayerThread(clientSocket, gameBoard, "RandomID", Type.WHITE));
+                }
                 thread.run();
             }
         }

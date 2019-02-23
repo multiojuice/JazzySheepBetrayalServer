@@ -1,6 +1,7 @@
 package JazzySheepBetrayalServer.DataStuctures;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -28,9 +29,17 @@ public class GameBoard {
         }
     }
 
-    public String getJsonPosition(){
-        Gson gson = new Gson();
-        return gson.toJson(board);
+    public JsonObject toJson(){
+        JsonObject mainObject = new JsonObject();
+        for(Player player : board.keySet()){
+            JsonObject playerObject = new JsonObject();
+            playerObject.addProperty("ID", player.getId());
+            playerObject.addProperty("Type", player.getType().name());
+            playerObject.addProperty("x",board.get(player).x);
+            playerObject.addProperty("y",board.get(player).y);
+            mainObject.add("Positions", playerObject);
+        }
+        return mainObject;
     }
 
 
