@@ -63,11 +63,12 @@ public class GameBoard {
 
 
     public Player getPlayerById(String playerid){
-        for(Player player : players){
-            if(player.getId().equals(playerid)){
+        for(Player player : players) {
+            if (player.getId().equals(playerid)) {
                 return player;
             }
         }
+        return null;
     }
 
     public String movePlayer(String id, int dx, int dy) throws InterruptedException{
