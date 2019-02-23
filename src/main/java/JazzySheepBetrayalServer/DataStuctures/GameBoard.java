@@ -38,4 +38,16 @@ public class GameBoard {
     public Point getPlayerById(String player){
         return board.get(player);
     }
+
+    public String movePlayer() throws InterruptedException{
+
+
+        // At the end of functionality we will make it wait before returning the go ahead
+        wait();
+        return "A string of the gameboard";
+    }
+
+    public void endRound() {
+        notifyAll();
+    }
 }

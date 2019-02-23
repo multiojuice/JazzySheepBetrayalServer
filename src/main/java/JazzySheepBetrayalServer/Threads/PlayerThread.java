@@ -21,6 +21,7 @@ public class PlayerThread implements Runnable {
         readyProtocol();
         playProtocol();
         endProtocol();
+
     }
 
     private void readyProtocol() {
