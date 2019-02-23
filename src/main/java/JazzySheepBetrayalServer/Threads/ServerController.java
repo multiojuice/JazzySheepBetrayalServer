@@ -23,16 +23,19 @@ public class ServerController implements Runnable {
     public void run() {
         System.out.println("Starting ServerControllerThread");
         while(true) {
+            // Listen and get new socket from client
+            Socket clientSocket = null;
             try {
-                Socket clientSocket = serverSocket.accept();
+                clientSocket = serverSocket.accept();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            // Send the socket to a playerThread to handle its interactions
+            if (clientSocket != null) {
+                Thread thread = new Thread(new PlayerThread(clientSocket, gameBoard, "RandomID"));
+                thread.run();
+            }
         }
-
-        Thread thread = new Thread(new );
-        thread.run();
-
-
     }
 }
