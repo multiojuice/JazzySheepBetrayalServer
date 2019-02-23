@@ -3,6 +3,8 @@ package JazzySheepBetrayalServer.Threads;
 import JazzySheepBetrayalServer.DataStuctures.GameBoard;
 import JazzySheepBetrayalServer.DataStuctures.Player;
 import JazzySheepBetrayalServer.DataStuctures.Type;
+import com.google.gson.Gson;
+import jdk.nashorn.internal.ir.debug.JSONWriter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,10 +35,17 @@ public class PlayerThread implements Runnable {
     }
 
     public void run() {
-        readyProtocol();
-        playProtocol();
-        endProtocol();
+        try {
+            readyProtocol();
+            boolean isGameOn = true;
+            while (isGameOn) {
+                playProtocol();
+            }
+            endProtocol();
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void readyProtocol() throws IOException {
@@ -51,9 +60,10 @@ public class PlayerThread implements Runnable {
         String gameBoardString = gameBoard.movePlayer(player.getId(), movement);
         if (gameBoardString.equals("false")) return false;
         out.println(gameBoardString);
+        return true;
     }
 
     private void endProtocol() {
-
+        out.println("{protocol: end}");
     }
 }

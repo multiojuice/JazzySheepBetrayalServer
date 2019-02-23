@@ -10,6 +10,7 @@ import java.util.HashSet;
 public class GameBoard {
     private HashMap<Player,Point> board;
     private HashSet<Player> players;
+    private boolean isOn = false;
 
     public GameBoard() {
         board = new HashMap<Player, Point>();
@@ -66,5 +67,9 @@ public class GameBoard {
 
     public void endRound() {
         notifyAll();
+    }
+
+    public boolean gameIsOn() {
+        return this.isOn;
     }
 }
