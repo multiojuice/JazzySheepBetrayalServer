@@ -23,6 +23,7 @@ public class PlayerThread implements Runnable {
         this.socket = socket;
         this.gameBoard = gameBoard;
         this.player = new Player(id, type);
+        gameBoard.addPlayer(player);
 
         try {
             in = new BufferedReader(new InputStreamReader(
