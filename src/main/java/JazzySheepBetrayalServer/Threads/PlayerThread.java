@@ -4,6 +4,7 @@ import JazzySheepBetrayalServer.DataStuctures.GameBoard;
 import JazzySheepBetrayalServer.DataStuctures.Player;
 import JazzySheepBetrayalServer.DataStuctures.Type;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import jdk.nashorn.internal.ir.debug.JSONWriter;
 
 import java.io.BufferedReader;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.rmi.server.ExportException;
 
 public class PlayerThread implements Runnable {
     private Socket socket;
@@ -50,15 +52,19 @@ public class PlayerThread implements Runnable {
     }
 
     private void readyProtocol() throws IOException {
-        out.println(player.toString());
+        JsonObject playerObject = player.toJson();
+        playerObject.addProperty("protocol", "ready");
+        out.println(playerObject.toString());
         String readyString = in.readLine();
         if (!readyString.equals("true")) System.out.println("ERROR: NOT READY");
-        out.println(gameBoard.initialStateString());
+        JsonObject obj = gameBoard.toJson();
+        obj.addProperty("protocol", "ready");
+        out.println(obj.toString());
     }
 
-    private boolean playProtocol() throws IOException {
+    private boolean playProtocol() throws Exception {
         String movement = in.readLine();
-        String gameBoardString = gameBoard.movePlayer(player.getId(), movement);
+        String gameBoardString = gameBoard.movePlayer("id", 1, 1);
         if (gameBoardString.equals("false")) return false;
         out.println(gameBoardString);
         return true;

@@ -23,8 +23,7 @@ public class ServerController implements Runnable {
 
     public void run() {
         System.out.println("Starting ServerControllerThread");
-        Thread roundMonitorThread = new Thread(new RoundMonitorThread(gameBoard));
-        roundMonitorThread.run();
+
         boolean blackSheep = true;
         while(!gameBoard.gameIsOn()) {
             // Listen and get new socket from client
@@ -46,6 +45,7 @@ public class ServerController implements Runnable {
                 thread.run();
             }
         }
-
+        Thread roundMonitorThread = new Thread(new RoundMonitorThread(gameBoard));
+        roundMonitorThread.run();
     }
 }
