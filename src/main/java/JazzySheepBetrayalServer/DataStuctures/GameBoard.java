@@ -12,11 +12,4 @@ public class GameBoard {
         board = new HashMap<String, Point>();
         playerIds = new HashSet<String>();
     }
-
-    public String addPlayer() {
-
-        return
-    }
-
-
 }
