@@ -62,16 +62,31 @@ public class GameBoard {
     }
 
 
-    public Point getPlayerById(String player){
-        return board.get(player);
+    public Player getPlayerById(String playerid){
+        for(Player player : players){
+            if(player.getId().equals(playerid)){
+                return player;
+            }
+        }
     }
 
-    public String movePlayer() throws InterruptedException{
+    public String movePlayer(String id, int dx, int dy) throws InterruptedException{
+        Player player = getPlayerById(id);
+        Point newPoint = new Point();
+        Point currentPoint = board.get(player);
 
+        newPoint.setLocation((int)currentPoint.getX()+dx, (int)currentPoint.getY()+dy);
+        if(newPoint.getX() >= 20){
+            newPoint.setLocation(newPoint.getX()-20, newPoint.getY());
+        }
+        if(newPoint.getY() >= 20){
+            newPoint.setLocation(newPoint.getX(), newPoint.getY()-20);
+        }
 
+        board.put(player, newPoint);
         // At the end of functionality we will make it wait before returning the go ahead
         wait();
-        return "A string of the gameboard";
+        return new Gson().toJson(toJson());
     }
 
     public void endRound() {
