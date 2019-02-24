@@ -25,6 +25,7 @@ public class ServerController implements Runnable {
         System.out.println("Starting ServerControllerThread");
 
         boolean blackSheep = true;
+        boolean isInit = false;
         while(!gameBoard.gameIsOn()) {
             // Listen and get new socket from client
             Socket clientSocket = null;
@@ -42,7 +43,12 @@ public class ServerController implements Runnable {
                 }else{
                     thread = new Thread(new PlayerThread(clientSocket, gameBoard, "RandomID", Type.WHITE));
                 }
-                thread.run();
+                thread.start();
+
+                if (!isInit) {
+                    gameBoard.initalize();
+                    isInit = true;
+                }
             }
         }
         Thread roundMonitorThread = new Thread(new RoundMonitorThread(gameBoard));

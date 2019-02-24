@@ -3,9 +3,7 @@ package JazzySheepBetrayalServer.Threads;
 import JazzySheepBetrayalServer.DataStuctures.GameBoard;
 import JazzySheepBetrayalServer.DataStuctures.Player;
 import JazzySheepBetrayalServer.DataStuctures.Type;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import jdk.nashorn.internal.ir.debug.JSONWriter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,6 +54,7 @@ public class PlayerThread implements Runnable {
         playerObject.addProperty("protocol", "ready");
         out.println(playerObject.toString());
         String readyString = in.readLine();
+        System.out.println(readyString);
         if (!readyString.equals("true")) System.out.println("ERROR: NOT READY");
         JsonObject obj = gameBoard.toJson();
         obj.addProperty("protocol", "ready");
