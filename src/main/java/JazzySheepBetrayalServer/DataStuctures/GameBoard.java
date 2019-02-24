@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -85,9 +86,35 @@ public class GameBoard {
         }
 
         board.put(player, newPoint);
+
+        checkCollisions();
+
         // At the end of functionality we will make it wait before returning the go ahead
         wait();
         return new Gson().toJson(toJson());
+    }
+
+    public void checkCollisions(){
+
+        ArrayList<Player> dead = new ArrayList<Player>();
+        for(Player player : board.keySet()){
+            for(Player player2 : board.keySet()){
+                Point pos1 = board.get(player);
+                Point pos2 = board.get(player2);
+                if(pos1.getLocation().equals(pos2.getLocation())){
+                    if(player.getType() == Type.BLACK && player2.getType() == Type.WHITE){
+                        dead.add(player2);
+                    }else if(player.getType() == Type.WHITE && player2.getType() == Type.BLACK){
+                        dead.add(player);
+                    }
+                }
+            }
+        }
+
+        for(Player deadPlayer : dead){
+            board.remove(deadPlayer);
+            players.remove(deadPlayer);
+        }
     }
 
     public void endRound() {
